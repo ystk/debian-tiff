@@ -1,0 +1,6 @@
+libtiff-scanlinesize.patch
+soname.patch
+man-errors.patch
+man-spelling.patch
+tif_getimage.c-CVE-2010-2233.patch
+fix-ycbcr-oob-read.patch
