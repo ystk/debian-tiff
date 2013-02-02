@@ -1,3 +1,65 @@
+tiff (3.9.4-5+squeeze8) stable-security; urgency=high
+
+  * Add fix for CVE-2012-5581, reimplementing DOTRANGE handling to make it
+    safer.  Thanks to Red Hat security team for backporting the fix.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 15 Dec 2012 06:26:30 -0500
+
+tiff (3.9.4-5+squeeze7) stable-security; urgency=high
+
+  * Add fix for CVE-2012-4564, a heap-buffer overflow.  Thanks Adrian La
+    Duca for doing all the work to prepare this upload.  (Closes: #692345)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 17 Nov 2012 12:44:54 -0500
+
+tiff (3.9.4-5+squeeze6) stable-security; urgency=high
+
+  * Add fix for CVE-2012-4447, a buffer overrun.  (Closes: #688944)
+  * CVE-2012-2088 was actually included in previous version but not listed
+    in the change log.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 05 Oct 2012 16:54:07 -0400
+
+tiff (3.9.4-5+squeeze5) stable-security; urgency=high
+
+  * Added several additional security patches taken from the Ubuntu Natty
+    (11.04) tiff package.  (Closes: #678140)
+
+    CVE-2010-2482
+    CVE-2010-2595
+    CVE-2010-2597
+    CVE-2010-2630
+    CVE-2010-4665
+    CVE-2012-2113
+    CVE-2012-3401
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 22 Sep 2012 11:51:18 -0400
+
+tiff (3.9.4-5+squeeze4) stable-security; urgency=high
+
+  * CVE-2012-1173
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Mon, 02 Apr 2012 15:40:46 +0000
+
+tiff (3.9.4-5+squeeze3) stable-security; urgency=high
+
+  * Redo CVE-2011-0192 to fix regression. (Closes: #630042)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 24 Jun 2011 05:28:13 -0400
+
+tiff (3.9.4-5+squeeze2) stable-security; urgency=high
+
+  * CVE-2009-5022: Buffer overflow in OJPEG support. (Closes: #624287)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 07 May 2011 10:21:28 -0400
+
+tiff (3.9.4-5+squeeze1) stable-security; urgency=high
+
+  * CVE-2011-0192: Buffer overflow in Fax4Decode
+  * CVE-2011-1167: Buffer overflow with thunder encoded files
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 02 Apr 2011 12:04:21 -0400
+
 tiff (3.9.4-5) unstable; urgency=high
 
   * Incorporated fix to CVE-2010-3087, a potential denial of service
