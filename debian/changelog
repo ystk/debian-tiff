@@ -1,3 +1,13 @@
+tiff (3.9.4-5+squeeze9) oldstable-security; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Fix cve-2013-1960: heap-based buffer overlow in tiff2pdf
+    (closes: #706675).
+  * Fix cve-2013-1961: stack-based buffer overflow in tiff2pdf
+    (closes: #706674). 
+
+ -- Michael Gilbert <mgilbert@debian.org>  Mon, 17 Jun 2013 01:41:22 +0000
+
 tiff (3.9.4-5+squeeze8) stable-security; urgency=high
 
   * Add fix for CVE-2012-5581, reimplementing DOTRANGE handling to make it
