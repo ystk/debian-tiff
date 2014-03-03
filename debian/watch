@@ -1,2 +1,2 @@
 version=3
-ftp://ftp.remotesensing.org/pub/libtiff/tiff-([\d\.]+).tar.gz
+http://download.osgeo.org/libtiff/tiff-([\d\.]+).tar.gz

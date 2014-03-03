@@ -1,4 +1,4 @@
-/* $Id: ppm2tiff.c,v 1.13.2.2 2010-06-08 18:50:44 bfriesen Exp $ */
+/* $Id: ppm2tiff.c,v 1.16 2010-04-10 19:22:34 bfriesen Exp $ */
 
 /*
  * Copyright (c) 1991-1997 Sam Leffler
@@ -41,6 +41,10 @@
 
 #ifdef HAVE_IO_H
 # include <io.h>
+#endif
+
+#ifdef NEED_LIBPORT
+# include "libport.h"
 #endif
 
 #include "tiffio.h"

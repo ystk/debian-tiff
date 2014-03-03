@@ -1,3 +1,250 @@
+tiff (4.0.2-6+deb7u2) stable-security; urgency=high
+
+  * Incorporated fixes to security issues CVE-2013-4231, CVE-2013-4232.
+    (Closes: #719303)
+  * Incorporated fix to CVE-2013-4244.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 24 Aug 2013 11:25:11 -0400
+
+tiff (4.0.2-6+deb7u1) stable-security; urgency=high
+
+  * Non-maintainer upload by the Security Team.
+  * Fix cve-2013-1960: heap-based buffer overlow in tiff2pdf
+    (closes: #706675).
+  * Fix cve-2013-1961: stack-based buffer overflow in tiff2pdf
+    (closes: #706674). 
+
+ -- Michael Gilbert <mgilbert@debian.org>  Mon, 17 Jun 2013 01:27:17 +0000
+
+tiff (4.0.2-6) unstable; urgency=high
+
+  * Fix /usr/share/doc symlink to directory transition.  When upgrading
+    from very old versions (pre 3.8.2-8), /usr/share/doc may contain
+    symbolic links that should be removed.  (Closes: #687645)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 26 Jan 2013 12:28:19 -0500
+
+tiff (4.0.2-5) unstable; urgency=high
+
+  * Add fix for CVE-2012-4564, a heap-buffer overflow.  Thanks Adrian La
+    Duca for doing all the work to prepare this upload.  (Closes: #692345)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 17 Nov 2012 12:40:25 -0500
+
+tiff (4.0.2-4) unstable; urgency=high
+
+  * Previous change was uploaded with the wrong CVE number.  I updated the
+    last changelog entry.  The correct CVE number is CVE-2012-4447.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 05 Oct 2012 17:33:44 -0400
+
+tiff (4.0.2-3) unstable; urgency=high
+
+  * Add fix for CVE-2012-4447, a buffer overrun.  (Closes: #688944)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 05 Oct 2012 17:04:38 -0400
+
+tiff (4.0.2-2) unstable; urgency=high
+
+  * SECURITY UPDATE: possible arbitrary code execution via heap overflow
+    in tiff2pdf.  (Closes: #682115)
+    - debian/patches/CVE-2012-3401.patch: properly set t2p->t2p_error in
+      tools/tiff2pdf.c.
+    - CVE-2012-3401
+    Changes prepared by Marc Deslauriers for Ubuntu.  Thanks!
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 21 Jul 2012 21:27:34 -0400
+
+tiff (4.0.2-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 24 Jun 2012 13:45:42 -0400
+
+tiff (4.0.1-8) unstable; urgency=low
+
+  * Call glFlush() in tiffgt to fix display problems.  From
+    https://bugs.launchpad.net/ubuntu/+source/tiff/+bug/797166.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 16 Jun 2012 21:20:04 -0400
+
+tiff (4.0.1-7) unstable; urgency=low
+
+  * Add new temporary package libtiff5-alt-dev, which provides libtiff5
+    development files in a location that doesn't conflict with
+    libtiff4-dev.  See README.Debian for details.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Thu, 24 May 2012 15:24:36 -0400
+
+tiff (4.0.1-6) unstable; urgency=low
+
+  * Include pkg-config files
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 13 May 2012 12:53:38 -0400
+
+tiff (4.0.1-5) unstable; urgency=low
+
+  * Fix shlibs again.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 22 Apr 2012 11:41:44 -0400
+
+tiff (4.0.1-4) unstable; urgency=low
+
+  * Use >= instead of > in shlibs file.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 22 Apr 2012 10:57:02 -0400
+
+tiff (4.0.1-3) unstable; urgency=low
+
+  * Support JBIG now that patents have expired. (Closes: #667835)
+  * Support LZMA.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 14 Apr 2012 19:03:04 -0400
+
+tiff (4.0.1-2) unstable; urgency=high
+
+  * Incorporated fix to CVE-2012-1173, a problem in the parsing of the
+    TileSize entry, which could result in the execution of arbitrary code
+    if a malformed image is opened.
+  * Updated standards to 3.9.3
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 06 Apr 2012 10:10:48 -0400
+
+tiff (4.0.1-1) unstable; urgency=low
+
+  * New upstream release
+  * Point watch file to new download location
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 20 Feb 2012 09:43:54 -0500
+
+tiff (4.0.0-2) experimental; urgency=low
+
+  * Rename libtiff-dev -> libtiff5-dev to avoid premature transition for
+    packages that explicitly depend on libtiff-dev.  At some future time,
+    libtiff5-dev will provide or be renamed back to libtiff-dev.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 04 Feb 2012 09:41:19 -0500
+
+tiff (4.0.0-1) experimental; urgency=low
+
+  * New upstream release
+  * Enable versioned symbols
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 28 Jan 2012 10:56:23 -0500
+
+tiff (4.0.0~beta7-2) experimental; urgency=low
+
+  * Incorporated changes from 3.9.5-2: security hardening and multiarch
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 17 Sep 2011 10:28:53 -0400
+
+tiff (4.0.0~beta7-1) experimental; urgency=low
+
+  * New upstream release including many security fixes and other
+    improvements
+  * Updated changelog with changes from 3.x series.
+  * Updated standards version to 3.9.2.  No changes required.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 16 Apr 2011 13:45:33 -0400
+
+tiff (4.0.0~beta6-3) experimental; urgency=low
+
+  * Incorporated fix to CVE-2010-2483, "fix crash on OOB reads in
+    putcontig8bitYCbCr11tile", from 3.9.4-4.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 02 Oct 2010 13:31:41 -0400
+
+tiff (4.0.0~beta6-2) experimental; urgency=low
+
+  * Incorporate changes from 3.9.4-{2,3} including updating standards
+    version to 3.9.1 along with associated fixes.  (CVE-2010-2233 was
+    already fixed in this version.)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 14 Aug 2010 16:36:44 -0400
+
+tiff (4.0.0~beta6-1) experimental; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 18 Jun 2010 21:42:57 -0400
+
+tiff (4.0.0~beta5-2) experimental; urgency=low
+
+  * Depend on libjpeg-dev instead of libjpeg62-dev.
+  * Change source format to '3.0 (quilt)'
+  * Update standards version to 3.8.4.  No changes required.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Wed, 10 Feb 2010 19:36:43 -0500
+
+tiff (4.0.0~beta5-1) experimental; urgency=low
+
+  * New upstream release
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 06 Nov 2009 22:58:07 -0500
+
+tiff (4.0.0~beta4-1) experimental; urgency=low
+
+  * New upstream release.  All debian patches incorporated among many
+    other fixes and enhancements.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 28 Aug 2009 11:30:09 -0400
+
+tiff (4.0.0~beta3-2) experimental; urgency=low
+
+  * Fixed previously incorrect patch to lzw problem.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 24 Aug 2009 14:45:10 -0400
+
+tiff (4.0.0~beta3-1) experimental; urgency=low
+
+  * New upstream release.  This version is not binary compatible with the
+    3.x series, nor is it entirely source compatible, but most
+    applications should port easily.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Fri, 21 Aug 2009 13:39:37 -0400
+
+tiff (3.9.5-2) unstable; urgency=low
+
+  * Implemented mulitarch and and PIE build for security hardening by
+    integrating the changes from the Ubuntu tiff packages.  Thanks to Marc
+    Deslauriers and anyone else who did the actual work.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 17 Sep 2011 10:15:39 -0400
+
+tiff (3.9.5-1) unstable; urgency=low
+
+  * New upstream release.  All security patches are fully incorporated
+    into this version, as are many other bug fixes.
+  * Updated standards version to 3.9.2.  No changes needed.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 16 Apr 2011 13:15:51 -0400
+
+tiff (3.9.4-9) unstable; urgency=high
+
+  * CVE-2011-1167: correct potential buffer overflow with thunder encoded
+    files with wrong bitspersample set.  (Closes: #619614)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 02 Apr 2011 10:59:38 -0400
+
+tiff (3.9.4-8) unstable; urgency=low
+
+  * Enable PIE (position independent executable) build for security
+    hardening.  Patch from Ubuntu.  (Closes: #613759)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 19 Mar 2011 10:22:32 -0400
+
+tiff (3.9.4-7) unstable; urgency=high
+
+  * Incorporate revised fix to CVE-2011-0192.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 13 Mar 2011 14:33:38 -0400
+
+tiff (3.9.4-6) unstable; urgency=high
+
+  * Incorporated fix to CVE-2011-0192, "Buffer overflow in Fax4Decode".
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 26 Feb 2011 18:44:23 -0500
+
 tiff (3.9.4-5) unstable; urgency=high
 
   * Incorporated fix to CVE-2010-3087, a potential denial of service

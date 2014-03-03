@@ -16,10 +16,6 @@ Changes in the tag name to type mapping also result in binary
 incompatibility because of the field setting and getting functions
 using variable arguments.
 
-Until tiff4 is released, debian's soname is out of step with
-upstreams.  For each new release, it will be necessary to update
-soname.patch.
-
 The tiff packages get a fair number of security-related bug reports.
 In the interest of keeping the quality of the tiff software as high as
 possible, it's good for the debian and Red Hat maintainers to be in
@@ -32,4 +28,4 @@ You can also see their CVS:
 
 http://cvs.fedoraproject.org/viewvc/rpms/libtiff/
 
- -- Jay Berkenbilt <qjb@debian.org>, Fri, 18 Jun 2010 21:33:28 -0400
+ -- Jay Berkenbilt <qjb@debian.org>, Wed, 10 Feb 2010 19:21:26 -0500
