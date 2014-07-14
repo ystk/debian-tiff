@@ -1,3 +1,11 @@
+tiff (3.9.4-5+squeeze11) squeeze-lts; urgency=high
+
+  * Fix for CVE-2013-4243 (validation for gif2tiff) from Red Hat.
+    DSA-2965-1
+    #742917
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Tue, 01 Jul 2014 18:00:00 +0200
+
 tiff (3.9.4-5+squeeze10) oldstable-security; urgency=high
 
   * Incorporated fixes to security issues CVE-2013-4231, CVE-2013-4232.
