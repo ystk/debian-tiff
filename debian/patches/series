@@ -1,9 +1,8 @@
 opengl.patch
-CVE-2012-3401.patch
-CVE-2012-4447.patch
 CVE-2012-4564.patch
 CVE-2013-1960.patch
 CVE-2013-1961.patch
 CVE-2013-4231.patch
 CVE-2013-4232.patch
 CVE-2013-4244.patch
+CVE-2013-4243.patch

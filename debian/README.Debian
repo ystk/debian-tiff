@@ -1,34 +1,30 @@
-Note that tiff 4.x provides libtiff5 and libtiff5-dev, while tiff 3.x
-provides libtiff4 and libtiff4-dev.  This may seem confusing, but it
-is just because the shared library versions and the software versions
-don't happen to be the same, nor is there any expectation for them to
-be the same.
+Note that tiff 4.x packages libtiff5, while tiff 3.x packaged
+libtiff4.  During the libtiff4 -> libtiff5 transition, the tiff source
+package is providing transitional packages for libtiff4-dev and
+libtiff5-alt-dev.  If you have a package with a build dependency on
+libtiff-dev, you don't have to care about any of this.  Otherwise, the
+notes below describe what you should do to make sure your package is
+ready for the transition.
 
-Until the libtiff4 -> libtiff5 transition occurs after the release of
-wheezy, a new temporary package called libtiff5-alt-dev is being
-provided.  This package installs include and library files for
-libtiff5 (tiff 4.x) in an alternative location with pkg-config files
-that point to it.  You should only use this package if you need to
-depend on libtiff5 development files while also having libtiff4-dev
-installed on your system.  This package will disappear when
-libtiff4-dev is removed from the archive.
+ * If your package build-depends on libtiff-dev already, no action
+   required; the release team will automatically schedule a rebuild of
+   your package at the appropriate time.
 
-The most common use of libtiff5-alt-dev will be as a build dependency
-for a debian package that has a direct dependency on libtiff5 (for
-example, to get bigtiff support) and an indirect dependency on
-libtiff4-dev.  In this case, you can have your package specify
-libtiff5-alt-dev instead of libtiff5-dev as a build dependency.  If
-your package finds the location of libtiff headers and libraries with
-pkg-config, then all you will have to do when libtiff5-alt-dev
-disappears is to change your build dependency to libtiff-dev, which
-will then point to libtiff5-dev.  For an example of a package that
-does this, look at vips.  Note that if you link use this package, your
-executables or shared libraries will include an rpath that points
-/usr/lib/<arch>/libtiff5-alt.  This is harmless since no actual shared
-libraries will live in that directory, but it is a side effect of
-having libdir set in the libtiff.la file there, which is needed for
-libtool to link with the correct -ltiff.  This situation will cause
-lintian errors, but the problem will go away after the libtiff
-transition is complete.
+ * If your package depends on libtiff4-dev but can work fine with tiff
+   4.x (most packages), replace your dependency on libtiff4-dev with a
+   new dependency on libtiff-dev.
 
- -- Jay Berkenbilt <qjb@debian.org>, Thu, 24 May 2012 15:50:07 -0400
+ * If your package build-depends on libtiff5-dev or libtiff5-alt-dev and
+   is known to work with both tiff 3.x and tiff 4.x (i.e., it does not
+   use the BIGTIFF extensions in tiff 4.x), you can just change the
+   build dependency to an unversioned libtiff-dev.  You can also remove
+   any special code that you may have added to your package to get it to
+   find tiff in the non-standard location.  If you were finding tiff
+   with pkg-config, you shouldn't have to make any changes to your
+   package other than the build dependency.
+
+ * If your package build-depends on libtiff5-dev, you don't HAVE to do
+   anything, but you may be helping yourself in the future if you change
+   the build dependency to libtiff-dev (>> 4.0.3-6~).
+
+ -- Jay Berkenbilt <qjb@debian.org>, Thu,  5 Dec 2013 12:55:17 -0500

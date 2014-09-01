@@ -1,18 +1,76 @@
-tiff (4.0.2-6+deb7u2) stable-security; urgency=high
+tiff (4.0.3-9) unstable; urgency=medium
+
+  * Fix for CVE-2013-4243 (validation for gif2tiff) from Red Hat. (Closes:
+    #742917)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 21 Jun 2014 18:12:40 -0400
+
+tiff (4.0.3-8) unstable; urgency=medium
+
+  * Remove libtiff5-alt-dev transitional package now that no one is
+    build-depending on it anymore.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 01 Mar 2014 09:36:51 -0500
+
+tiff (4.0.3-7) unstable; urgency=medium
+
+  * Use dh-autoreconf to support new architectures in Ubuntu.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Mon, 23 Dec 2013 09:58:47 -0500
+
+tiff (4.0.3-6) unstable; urgency=low
+
+  * Update standards to 3.9.5.  No changes required.
+  * libtiff4 -> libtiff5 transition.  libtiff5-dev now provides
+    libtiff-dev.  libtiff5-alt-dev and libtiff4-dev are transitional
+    packages that depend on libtiff5-dev.  They will both be removed
+    before jessie.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Wed, 04 Dec 2013 14:36:36 -0500
+
+tiff (4.0.3-5) unstable; urgency=low
+
+  * Replace shlibs file with symbols file
+  * Update standards to 3.9.4
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 15 Sep 2013 08:31:41 -0400
+
+tiff (4.0.3-4) unstable; urgency=low
+
+  * Complete Multi-Arch conversion for dev packages.  (Closes: #689085)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 24 Aug 2013 11:50:20 -0400
+
+tiff (4.0.3-3) unstable; urgency=high
+
+  * Incorporated fixes to security issues CVE-2013-4244.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sat, 24 Aug 2013 11:20:00 -0400
+
+tiff (4.0.3-2) unstable; urgency=high
 
   * Incorporated fixes to security issues CVE-2013-4231, CVE-2013-4232.
     (Closes: #719303)
-  * Incorporated fix to CVE-2013-4244.
 
- -- Jay Berkenbilt <qjb@debian.org>  Sat, 24 Aug 2013 11:25:11 -0400
+ -- Jay Berkenbilt <qjb@debian.org>  Thu, 22 Aug 2013 11:52:58 -0400
 
-tiff (4.0.2-6+deb7u1) stable-security; urgency=high
+tiff (4.0.3-1) unstable; urgency=low
+
+  * Acknowledge/incorporate NMU.  Thanks!
+  * New upstream version.  Patches incorporated:
+     CVE-2012-3401.patch
+     CVE-2012-4447.patch
+  * Add build dependency on autotools-dev to help porters.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 23 Jun 2013 10:39:04 -0400
+
+tiff (4.0.2-6+nmu1) unstable; urgency=high
 
   * Non-maintainer upload by the Security Team.
   * Fix cve-2013-1960: heap-based buffer overlow in tiff2pdf
     (closes: #706675).
   * Fix cve-2013-1961: stack-based buffer overflow in tiff2pdf
-    (closes: #706674). 
+    (closes: #706674).
 
  -- Michael Gilbert <mgilbert@debian.org>  Mon, 17 Jun 2013 01:27:17 +0000
 

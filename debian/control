@@ -2,8 +2,8 @@ Source: tiff
 Section: libs
 Priority: optional
 Maintainer: Jay Berkenbilt <qjb@debian.org>
-Build-Depends: cdbs (>= 0.4.106~), debhelper (>> 9), dpkg-dev (>= 1.16.1~), zlib1g-dev, libjpeg-dev, libxmu-dev, libglu1-mesa-dev, freeglut3-dev, libxi-dev, libjbig-dev, liblzma-dev
-Standards-Version: 3.9.3
+Build-Depends: cdbs (>= 0.4.106~), debhelper (>> 9), dh-autoreconf, dpkg-dev (>= 1.16.1~), autotools-dev, zlib1g-dev, libjpeg-dev, libxmu-dev, libglu1-mesa-dev, freeglut3-dev, libxi-dev, libjbig-dev, liblzma-dev
+Standards-Version: 3.9.5
 Homepage: http://libtiff.maptools.org
 
 Package: libtiff5
@@ -29,27 +29,16 @@ Description: Tag Image File Format (TIFF) library -- C++ interface
 Package: libtiff5-dev
 Section: libdevel
 Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends}, libtiff5 (= ${binary:Version}), libtiffxx5 (= ${binary:Version}), libc6-dev | libc-dev, zlib1g-dev, libjpeg-dev, libjbig-dev, liblzma-dev
-Replaces: libtiff5-alt-dev, libtiff4-dev, libtiff-dev (<< 4.0.0-2)
-Conflicts: libtiff5-alt-dev, libtiff4-dev, libtiff-dev (<< 4.0.0-2)
+Replaces: libtiff5-alt-dev (<< 4.0.3-6~), libtiff4-dev (<< 4.0.3-6~)
+Conflicts: libtiff5-alt-dev (<< 4.0.3-6~), libtiff4-dev (<< 4.0.3-6~)
+Provides: libtiff-dev
 Description: Tag Image File Format library (TIFF), development files
  libtiff is a library providing support for the Tag Image File Format
  (TIFF), a widely used format for storing image data.  This package
  includes the development files, static library, and header files.
-
-Package: libtiff5-alt-dev
-Section: libdevel
-Architecture: any
-Depends: ${misc:Depends}, libtiff5 (= ${binary:Version}), libtiffxx5 (= ${binary:Version}), libc6-dev | libc-dev, zlib1g-dev, libjpeg-dev, libjbig-dev, liblzma-dev
-Conflicts: libtiff5-dev
-Description: Tag Image File Format library (TIFF), alternative development files
- This package is a temporary package designed to make it possible for
- packages to use features in libtiff5, such as bigtiff, while still
- having indirect dependencies on libtiff4-dev.  This package will go
- away after the release of wheezy.  You should only use it if you have
- a requirement to have both libtiff5-dev files and libtiff4-dev files
- installed on your system at the same time.  See README.Debian for
- additional information.
 
 Package: libtiff-tools
 Section: graphics
@@ -82,3 +71,15 @@ Description: TIFF manipulation and conversion documentation
  libtiff is a library providing support for the Tag Image File Format
  (TIFF), a widely used format for storing image data.  This package
  contains documentation.
+
+Package: libtiff4-dev
+Section: oldlibs
+Priority: extra
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends}, libtiff5-dev (>> 4.0.3-6~)
+Description: Tag Image File Format library (TIFF), transitional package
+ This is a transitional package that can be safely removed.  Build
+ dependencies on libtiff4-dev should be replaced with build
+ dependencies on libtiff-dev.

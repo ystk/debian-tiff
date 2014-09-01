@@ -13,9 +13,11 @@ export CPPFLAGS
 # Include cdbs rules files.
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/autotools.mk
+include /usr/share/cdbs/1/rules/autoreconf.mk
 
 DEB_CONFIGURE_USER_FLAGS = --with-docdir="\$${prefix}/share/doc/libtiff-doc" \
 	--libdir="\$${prefix}/lib/$(DEB_HOST_MULTIARCH)" \
+	--includedir="\$${prefix}/include/$(DEB_HOST_MULTIARCH)" \
 	--enable-ld-version-script
 
 clean::
@@ -38,25 +40,3 @@ binary-post-install/%::
 	if [ "$*" != "libtiff5" ]; then \
 	    sed -e s/PKG/$*/g < debian/all-preinst > debian/$*.preinst; \
 	fi
-
-# --- TEMPORARY -- remove when libtiff5-alt-dev is gone ---
-# Also remove debian/libtiff5-alt-dev.*
-binary-post-install/libtiff5-alt-dev::
-	sed -i "s,^dependency_libs=.*,dependency_libs=''," \
-	   debian/libtiff5-alt-dev/usr/lib/*/*.la
-	rm -rf debian/libtiff5-alt-dev/usr/share/man
-	mkdir debian/libtiff5-alt-dev/usr/include/libtiff5-alt
-	mv debian/libtiff5-alt-dev/usr/include/tiff* \
-	   debian/libtiff5-alt-dev/usr/include/libtiff5-alt
-	LDIR=$(wildcard debian/libtiff5-alt-dev/usr/lib/*); \
-	mkdir $$LDIR/libtiff5-alt; \
-	mv $$LDIR/lib* $$LDIR/libtiff5-alt; \
-	l1=`readlink $$LDIR/libtiff5-alt/libtiff.so`; \
-	l2=`readlink $$LDIR/libtiff5-alt/libtiffxx.so`; \
-	rm $$LDIR/libtiff5-alt/libtiff*.so; \
-	ln -s ../$$l1  $$LDIR/libtiff5-alt/libtiff.so; \
-	ln -s ../$$l2  $$LDIR/libtiff5-alt/libtiffxx.so; \
-	sed -i "s,\(lib\|include\)dir=\(.*\),\1dir=\2/libtiff5-alt," \
-	   $$LDIR/pkgconfig/libtiff-4.pc; \
-	sed -i "s,libdir='\(.*\)',libdir='\1/libtiff5-alt'," \
-	   $$LDIR/libtiff5-alt/*.la
