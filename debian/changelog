@@ -1,3 +1,46 @@
+tiff (4.0.3-12.3) unstable; urgency=medium
+
+  * Add another (final) patch for CVE-2014-8128 (Bug #2499). Thanks to
+    Petr Gajdos
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Mon, 23 Mar 2015 18:26:40 +0100
+
+tiff (4.0.3-12.2) unstable; urgency=medium
+
+  * Add another patch for CVE-2014-8128 (Bug #2501)
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Fri, 13 Mar 2015 23:54:02 +0100
+
+tiff (4.0.3-12.1) unstable; urgency=medium
+
+  * NMU as discussed with Ondrej, the future adopter of tiff
+  * Fix multiple security issues, exact details will be recorded in the
+    Debian security tracker
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Sat, 21 Feb 2015 13:06:08 +0100
+
+tiff (4.0.3-12) unstable; urgency=high
+
+  * Fix integer overflow in bmp2tiff. CVE-2014-9330. (Closes: #773987)
+
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 30 Dec 2014 11:32:04 -0500
+
+tiff (4.0.3-11) unstable; urgency=medium
+
+  * Don't crash on JPEG => non-JPEG conversion (Closes: #741451)
+  * Thanks Tomasz Buchert <tomasz.buchert@inria.fr> for preparing the fix!
+
+ -- Jay Berkenbilt <qjb@debian.org>  Tue, 23 Dec 2014 15:51:40 -0500
+
+tiff (4.0.3-10) unstable; urgency=medium
+
+  * Remove libtiff4-dev, completing the tiff transition. Packages that
+    still declare build dependencies on libtiff4-dev must now build depend
+    on libtiff-dev instead, or if a versioned dependency is required,
+    libtiff5-dev with a specific version.
+
+ -- Jay Berkenbilt <qjb@debian.org>  Sun, 29 Jun 2014 17:32:18 -0400
+
 tiff (4.0.3-9) unstable; urgency=medium
 
   * Fix for CVE-2013-4243 (validation for gif2tiff) from Red Hat. (Closes:

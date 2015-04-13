@@ -71,15 +71,3 @@ Description: TIFF manipulation and conversion documentation
  libtiff is a library providing support for the Tag Image File Format
  (TIFF), a widely used format for storing image data.  This package
  contains documentation.
-
-Package: libtiff4-dev
-Section: oldlibs
-Priority: extra
-Architecture: any
-Multi-Arch: same
-Pre-Depends: ${misc:Pre-Depends}
-Depends: ${misc:Depends}, libtiff5-dev (>> 4.0.3-6~)
-Description: Tag Image File Format library (TIFF), transitional package
- This is a transitional package that can be safely removed.  Build
- dependencies on libtiff4-dev should be replaced with build
- dependencies on libtiff-dev.
