@@ -1,0 +1,261 @@
+Author: Even Rouault <even.rouault@spatialys.com>
+Date: Sun, 21 Dec 2014 15:15:31 +0000
+Description:
+ Fix various crasher bugs on fuzzed images.
+ * libtiff/tif_dir.c: TIFFSetField(): refuse to set negative values for
+ TIFFTAG_XRESOLUTION and TIFFTAG_YRESOLUTION that cause asserts when writing
+ the directory
+ * libtiff/tif_dirread.c: TIFFReadDirectory(): refuse to read ColorMap or
+ TransferFunction if BitsPerSample has not yet been read, otherwise reading
+ it later will cause user code to crash if BitsPerSample > 1
+ * libtiff/tif_getimage.c: TIFFRGBAImageOK(): return FALSE if LOGLUV with
+ SamplesPerPixel != 3, or if CIELAB with SamplesPerPixel != 3 or BitsPerSample != 8
+ * libtiff/tif_next.c: in the "run mode", use tilewidth for tiled images
+ instead of imagewidth to avoid crash
+ * tools/bmp2tiff.c: fix crash due to int overflow related to input BMP dimensions
+ * tools/tiff2pdf.c: fix crash due to invalid tile count (should likely be checked by
+ libtiff too). Detect invalid settings of BitsPerSample/SamplesPerPixel for CIELAB / ITULAB
+ * tools/tiffcrop.c: fix crash due to invalid TileWidth/TileHeight
+ * tools/tiffdump.c: fix crash due to overflow of entry count.
+ .
+ [This covers part of CVE-2014-8128, part of CVE-2014-8129, and CVE-2014-9330]
+ .
+ [benh: Backported to 3.9.4:
+  - Drop changes to ChangeLog
+  - Drop changes to tiffdump.c, not applicable to this version
+  - s/\bTIFFField\b/TIFFFieldInfo/
+  - Adjust context]
+
+--- a/libtiff/tif_dir.c
++++ b/libtiff/tif_dir.c
+@@ -141,6 +141,7 @@ _TIFFVSetField(TIFF* tif, ttag_t tag, va
+ 	TIFFDirectory* td = &tif->tif_dir;
+ 	int status = 1;
+ 	uint32 v32, i, v;
++    double dblval;
+ 	char* s;
+ 
+ 	switch (tag) {
+@@ -245,10 +246,16 @@ _TIFFVSetField(TIFF* tif, ttag_t tag, va
+ 		td->td_smaxsamplevalue = va_arg(ap, double);
+ 		break;
+ 	case TIFFTAG_XRESOLUTION:
+-		td->td_xresolution = (float) va_arg(ap, double);
++        dblval = va_arg(ap, double);
++        if( dblval < 0 )
++            goto badvaluedouble;
++		td->td_xresolution = (float) dblval;
+ 		break;
+ 	case TIFFTAG_YRESOLUTION:
+-		td->td_yresolution = (float) va_arg(ap, double);
++        dblval = va_arg(ap, double);
++        if( dblval < 0 )
++            goto badvaluedouble;
++		td->td_yresolution = (float) dblval;
+ 		break;
+ 	case TIFFTAG_PLANARCONFIG:
+ 		v = va_arg(ap, uint32);
+@@ -598,6 +605,16 @@ badvalue32:
+ 		     _TIFFFieldWithTag(tif, tag)->field_name);
+ 	va_end(ap);
+ 	return (0);
++badvaluedouble:
++        {
++        const TIFFFieldInfo* fip=TIFFFieldWithTag(tif,tag);
++        TIFFErrorExt(tif->tif_clientdata, module,
++             "%s: Bad value %f for \"%s\" tag",
++             tif->tif_name, dblval,
++             fip ? fip->field_name : "Unknown");
++        va_end(ap);
++        }
++    return (0);
+ }
+ 
+ /*
+--- a/libtiff/tif_dirread.c
++++ b/libtiff/tif_dirread.c
+@@ -86,6 +86,7 @@ TIFFReadDirectory(TIFF* tif)
+ 	uint16 previous_tag = 0;
+ 	int diroutoforderwarning = 0, compressionknown = 0;
+ 	int haveunknowntags = 0;
++    int bitspersample_read = FALSE;
+ 
+ 	tif->tif_diroff = tif->tif_nextdiroff;
+ 	/*
+@@ -465,6 +466,8 @@ TIFFReadDirectory(TIFF* tif)
+ 				    !TIFFSetField(tif, dp->tdir_tag, iv))
+ 					goto bad;
+ 			}
++            if( dp->tdir_tag == TIFFTAG_BITSPERSAMPLE )
++                bitspersample_read = TRUE;
+ 			break;
+ 		case TIFFTAG_SMINSAMPLEVALUE:
+ 		case TIFFTAG_SMAXSAMPLEVALUE:
+@@ -496,6 +499,19 @@ TIFFReadDirectory(TIFF* tif)
+ 				 * data values; Colormap can have only 3x
+ 				 * items.
+ 				 */
++                /* It would be dangerous to instanciate those tag values */
++                /* since if td_bitspersample has not yet been read (due to */
++                /* unordered tags), it could be read afterwards with a */
++                /* values greater than the default one (1), which may cause */
++                /* crashes in user code */
++                if( !bitspersample_read )
++                {
++                    fip = TIFFFieldWithTag(tif,dp->tdir_tag);
++                    TIFFWarningExt(tif->tif_clientdata,module,
++                                   "Ignoring %s since BitsPerSample tag not found",
++                                   fip ? fip->field_name : "unknown tagname");
++                    continue;
++                }
+ 				v = 1L<<td->td_bitspersample;
+ 				if (dp->tdir_tag == TIFFTAG_COLORMAP ||
+ 				    dp->tdir_count != v) {
+--- a/libtiff/tif_getimage.c
++++ b/libtiff/tif_getimage.c
+@@ -178,8 +178,23 @@ TIFFRGBAImageOK(TIFF* tif, char emsg[102
+ 				    "Planarconfiguration", td->td_planarconfig);
+ 				return (0);
+ 			}
++			if( td->td_samplesperpixel != 3 )
++            {
++                sprintf(emsg,
++                        "Sorry, can not handle image with %s=%d",
++                        "Samples/pixel", td->td_samplesperpixel);
++                return 0;
++            }
+ 			break;
+ 		case PHOTOMETRIC_CIELAB:
++            if( td->td_samplesperpixel != 3 || td->td_bitspersample != 8 )
++            {
++                sprintf(emsg,
++                        "Sorry, can not handle image with %s=%d and %s=%d",
++                        "Samples/pixel", td->td_samplesperpixel,
++                        "Bits/sample", td->td_bitspersample);
++                return 0;
++            }
+ 			break;
+ 		default:
+ 			sprintf(emsg, "Sorry, can not handle image with %s=%d",
+--- a/libtiff/tif_next.c
++++ b/libtiff/tif_next.c
+@@ -98,6 +98,8 @@ NeXTDecode(TIFF* tif, tidata_t buf, tsiz
+ 		default: {
+ 			uint32 npixels = 0, grey;
+ 			uint32 imagewidth = tif->tif_dir.td_imagewidth;
++            if( isTiled(tif) )
++                imagewidth = tif->tif_dir.td_tilewidth;
+ 
+ 			/*
+ 			 * The scanline is composed of a sequence of constant
+--- a/tools/bmp2tiff.c
++++ b/tools/bmp2tiff.c
+@@ -399,6 +399,13 @@ main(int argc, char* argv[])
+ 
+ 		width = info_hdr.iWidth;
+ 		length = (info_hdr.iHeight > 0) ? info_hdr.iHeight : -info_hdr.iHeight;
++        if( width <= 0 || length <= 0 )
++        {
++            TIFFError(infilename,
++                  "Invalid dimensions of BMP file" );
++            close(fd);
++            return -1;
++        }
+ 
+ 		switch (info_hdr.iBitCount)
+ 		{
+@@ -589,6 +596,14 @@ main(int argc, char* argv[])
+ 
+ 			compr_size = file_hdr.iSize - file_hdr.iOffBits;
+ 			uncompr_size = width * length;
++            /* Detect int overflow */
++            if( uncompr_size / width != length )
++            {
++                TIFFError(infilename,
++                    "Invalid dimensions of BMP file" );
++                close(fd);
++                return -1;
++            }
+ 			comprbuf = (unsigned char *) _TIFFmalloc( compr_size );
+ 			if (!comprbuf) {
+ 				TIFFError(infilename,
+--- a/tools/tiff2pdf.c
++++ b/tools/tiff2pdf.c
+@@ -1226,6 +1226,15 @@ void t2p_read_tiff_init(T2P* t2p, TIFF*
+                     t2p->t2p_error = T2P_ERR_ERROR;
+                     return;
+ 				}
++                if( (t2p->tiff_tiles[i].tiles_tilecount % xuint16) != 0 )
++                {
++                    TIFFError(
++                        TIFF2PDF_MODULE, 
++                        "Invalid tile count, %s", 
++                        TIFFFileName(input));
++                    t2p->t2p_error = T2P_ERR_ERROR;
++                    return;
++                }
+ 				t2p->tiff_tiles[i].tiles_tilecount/= xuint16;
+ 		}
+ 		if( t2p->tiff_tiles[i].tiles_tilecount > 0){
+@@ -1606,6 +1615,22 @@ void t2p_read_tiff_data(T2P* t2p, TIFF*
+ #endif
+ 			break;
+ 		case PHOTOMETRIC_CIELAB:
++            if( t2p->tiff_samplesperpixel != 3){
++                TIFFError(
++                    TIFF2PDF_MODULE, 
++                    "Unsupported samplesperpixel = %d for CIELAB", 
++                    t2p->tiff_samplesperpixel);
++                t2p->t2p_error = T2P_ERR_ERROR;
++                return;
++            }
++            if( t2p->tiff_bitspersample != 8){
++                TIFFError(
++                    TIFF2PDF_MODULE, 
++                    "Invalid bitspersample = %d for CIELAB", 
++                    t2p->tiff_bitspersample);
++                t2p->t2p_error = T2P_ERR_ERROR;
++                return;
++            }
+ 			t2p->pdf_labrange[0]= -127;
+ 			t2p->pdf_labrange[1]= 127;
+ 			t2p->pdf_labrange[2]= -127;
+@@ -1621,6 +1646,22 @@ void t2p_read_tiff_data(T2P* t2p, TIFF*
+ 			t2p->pdf_colorspace=T2P_CS_LAB;
+ 			break;
+ 		case PHOTOMETRIC_ITULAB:
++            if( t2p->tiff_samplesperpixel != 3){
++                TIFFError(
++                    TIFF2PDF_MODULE, 
++                    "Unsupported samplesperpixel = %d for ITULAB", 
++                    t2p->tiff_samplesperpixel);
++                t2p->t2p_error = T2P_ERR_ERROR;
++                return;
++            }
++            if( t2p->tiff_bitspersample != 8){
++                TIFFError(
++                    TIFF2PDF_MODULE, 
++                    "Invalid bitspersample = %d for ITULAB", 
++                    t2p->tiff_bitspersample);
++                t2p->t2p_error = T2P_ERR_ERROR;
++                return;
++            }
+ 			t2p->pdf_labrange[0]=-85;
+ 			t2p->pdf_labrange[1]=85;
+ 			t2p->pdf_labrange[2]=-75;
+--- a/tools/tiffcrop.c
++++ b/tools/tiffcrop.c
+@@ -1193,9 +1193,10 @@ static int writeBufferToContigTiles (TIF
+   tsize_t tilesize = TIFFTileSize(out);
+   unsigned char *tilebuf = NULL;
+ 
+-  TIFFGetField(out, TIFFTAG_TILELENGTH, &tl);
+-  TIFFGetField(out, TIFFTAG_TILEWIDTH, &tw);
+-  TIFFGetField(out, TIFFTAG_BITSPERSAMPLE, &bps);
++  if( !TIFFGetField(out, TIFFTAG_TILELENGTH, &tl) ||
++      !TIFFGetField(out, TIFFTAG_TILEWIDTH, &tw) ||
++      !TIFFGetField(out, TIFFTAG_BITSPERSAMPLE, &bps) )
++      return 1;
+ 
+   tile_buffsize = tilesize;
+   if (tilesize < (tsize_t)(tl * tile_rowsize))

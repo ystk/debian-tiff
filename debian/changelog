@@ -1,3 +1,19 @@
+tiff (3.9.4-5+squeeze12) squeeze-lts; urgency=high
+
+  * Non-maintainer upload by the Squeeze LTS team
+  * Fixes for most of CVE-2014-8127 (out-of-bounds reads; bugs #2484, #2485,
+    #2486)
+  * Fixes for CVE-2014-8128 (out-of-bounds writes; bugs #2489, #2492, #2493,
+    #2495, #2499, #2501)
+  * Fix for CVE-2014-8129 (out-of-bounds read and write in NeXT 2-bit Grey
+    Scale Compression Algorithm decoder; bugs #2487, #2488)
+  * Fix for CVE-2014-9330 (out-of-bounds read in bmp2tiff; bug #2494)
+    (Closes: #773987)
+  * Fix for CVE-2014-9655 (out-of-bounds reads in NeXT 2-bit Grey
+    Scale Compression Algorithm decoder and YCbCr-RGB converters)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Wed, 06 May 2015 22:37:44 +0100
+
 tiff (3.9.4-5+squeeze11) squeeze-lts; urgency=high
 
   * Fix for CVE-2013-4243 (validation for gif2tiff) from Red Hat.

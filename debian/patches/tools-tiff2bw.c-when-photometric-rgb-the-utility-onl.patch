@@ -1,0 +1,22 @@
+Author: Even Rouault <even.rouault@spatialys.com>
+Date: Sun, 21 Dec 2014 20:58:29 +0000
+Description:
+ * tools/tiff2bw.c: when Photometric=RGB, the utility only works if
+ SamplesPerPixel = 3. Enforce that
+ http://bugzilla.maptools.org/show_bug.cgi?id=2485 (CVE-2014-8127)
+ .
+ [benh: Backported to 3.9.4: drop changes to ChangeLog]
+--- a/tools/tiff2bw.c
++++ b/tools/tiff2bw.c
+@@ -167,6 +167,11 @@ main(int argc, char* argv[])
+ 		    argv[optind], samplesperpixel);
+ 		return (-1);
+ 	}
++	if( photometric == PHOTOMETRIC_RGB && samplesperpixel != 3) {
++		fprintf(stderr, "%s: Bad samples/pixel %u for PHOTOMETRIC_RGB.\n",
++		    argv[optind], samplesperpixel);
++		return (-1);
++	}
+ 	TIFFGetField(in, TIFFTAG_BITSPERSAMPLE, &bitspersample);
+ 	if (bitspersample != 8) {
+ 		fprintf(stderr,
