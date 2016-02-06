@@ -1,3 +1,17 @@
+tiff (4.0.3-12.3+deb8u1) jessie-security; urgency=high
+
+  * Backport upstream fixes for:
+    - CVE-2015-8665 an out-of-bound read in TIFFRGBAImage interface
+      (closes: #808968),
+    - CVE-2015-8683 an out-of-bounds read in CIE Lab image format
+      (closes: #809021),
+    - CVE-2015-8781 out of bounds write at tif_luv.c:208,
+    - CVE-2015-8782 potential out-of-bound writes in decode,
+    - CVE-2015-8783 potential out-of-bound reads in case of short input data,
+    - CVE-2015-8784 potential out-of-bound write in NeXTDecode().
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Sat, 02 Jan 2016 09:18:06 +0100
+
 tiff (4.0.3-12.3) unstable; urgency=medium
 
   * Add another (final) patch for CVE-2014-8128 (Bug #2499). Thanks to
