@@ -1,3 +1,20 @@
+tiff (3.9.4-5+squeeze14) squeeze-lts; urgency=medium
+
+  * Non-maintainer upload by the Squeeze LTS Team
+  * Fix CVE-2015-8781, CVE-2015-8782 and CVE-2015-8783: out-of-band read/write
+    when decoding invalid data
+  * Fix CVE-2015-8784: potential out-of-bound write in NeXTDecode()
+
+ -- Damyan Ivanov <dmn@debian.org>  Sat, 30 Jan 2016 11:39:29 +0000
+
+tiff (3.9.4-5+squeeze13) squeeze-lts; urgency=medium
+
+  * Non-maintainer upload by the Debian LTS Team.
+  * Fix CVE-2015-8665: Out-of-bounds read in TIFFRGBAImage interface.
+  * Fix CVE-2015-8683: Out-of-bounds read in CIE Lab image format.
+
+ -- Santiago Ruano Rincón <santiagorr@riseup.net>  Mon, 25 Jan 2016 06:28:33 +0100
+
 tiff (3.9.4-5+squeeze12) squeeze-lts; urgency=high
 
   * Non-maintainer upload by the Squeeze LTS team

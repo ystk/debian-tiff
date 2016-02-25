@@ -35,3 +35,6 @@ CVE-2014-9655.patch
 fix-various-crasher-bugs-on-fuzzed-images.patch
 tools-pal2rgb.c-tools-thumbnail.c-fix-crash-by-disab.patch
 tools-tiff2bw.c-when-photometric-rgb-the-utility-onl.patch
+CVE-2015-8665_and_CVE-2015-8683.patch
+CVE-2015-8781.patch
+CVE-2015-8784.patch
