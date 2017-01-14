@@ -1,3 +1,61 @@
+tiff (4.0.3-12.3+deb8u2) jessie-security; urgency=high
+
+  * Backport fix for the following vulnerabilities:
+    - CVE-2016-5314 , CVE-2016-5315 , CVE-2016-5316, CVE-2016-5317: several
+      out of bound writes in the rgb2ycbcr tool (closes: #830700),
+    - CVE-2016-5320, rgb2ycbcr: command excution,
+    - CVE-2016-5875, heap-based buffer overflow when using the PixarLog
+      compression format,
+    - CVE-2016-6223, information leak in libtiff/tif_read.c (closes: #842270),
+    - CVE-2016-5321: DumpModeDecode() DoS,
+    - CVE-2016-5323: _TIFFFax3fillruns() NULL pointer dereference,
+    - CVE-2016-3945: out-of-bounds write in the tiff2rgba tool,
+    - CVE-2016-3990: out-of-bounds write in horizontalDifference8() in tiffcp
+      tool (closes: #836570),
+    - CVE-2016-3991: heap-based buffer overflow in the loadImage function in
+      the tiffcrop tool,
+    - CVE-2016-5322: extractContigSamplesBytes: out-of-bounds read in the
+      tiffcrop tool,
+    - CVE-2016-3623: rgb2ycbcr tool DoS by setting the (1) '-v' or (2) '-h'
+      parameter to 0 , 
+    - CVE-2016-9533: PixarLog horizontalDifference heap-buffer-overflow,
+    - CVE-2016-9534: TIFFFlushData1 heap-buffer-overflow,
+    - CVE-2016-9535: Predictor heap-buffer-overflow,
+    - CVE-2016-9536: t2p_process_jpeg_strip heap-buffer-overflow,
+    - CVE-2016-9537: out-of-bounds write vulnerabilities in buffers of
+      tiffcrop,
+    - CVE-2016-9538: read of undefined buffer in readContigStripsIntoBuffer()
+      due to uint16 overflow,
+    - CVE-2016-9540: out-of-bounds write on tiled images,
+    - CVE-2016-3624: rgb2ycbcr tool DoS by setting the '-v' option to -1 ,
+    - CVE-2016-3622: divide-by-zero error in the tiff2rgba tool
+      (closes: #820365),
+    - CVE-2016-5652: fix write buffer overflow of 2 bytes on JPEG compressed
+      images (closes: #842361),
+    - CVE-2016-9453: out-of-bounds write memcpy in tiff2pdf tool,
+    - CVE-2016-9273: read outsize of array in tiffsplit tool
+      (closes: #844013),
+    - CVE-2016-9532: heap buffer overflow via writeBufferToSeparateStrips in
+      the tiffcrop tool (closes: #844057),
+    - CVE-2016-9297: potential read outside buffer in _TIFFPrintField()
+      (closes: #844226),
+    - CVE-2016-9448: invalid read of size 1 in TIFFFetchNormalTag, regression
+      of CVE-2016-9297 ,
+    - CVE-2016-10092: heap-buffer-overflow in tiffcrop,
+    - CVE-2016-10093: uint32 underflow/overflow that can cause heap-based
+      buffer overflow in tiffcp,
+    - CVE-2016-10094: off-by-one error in tiff2pdf.
+  * Fix CVE-2015-8668 (closes: #842046), CVE-2016-3619 (closes: #820362),
+    CVE-2016-3620 (closes: #820363), CVE-2016-3621 (closes: #820364) and
+    CVE-2016-5319 with removing bmp2tiff.
+  * Fix CVE-2016-3186 (closes: #819972) and CVE-2016-5102 with removing
+    gif2tiff.
+  * Fix CVE-2016-3631 (closes: #820366), CVE-2016-3632 , CVE-2016-3633 ,
+    CVE-2016-3634 and CVE-2016-8331 with removing thumbnail.
+  * Remove no longer supported ras2tiff tool.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Mon, 21 Nov 2016 21:32:06 +0000
+
 tiff (4.0.3-12.3+deb8u1) jessie-security; urgency=high
 
   * Backport upstream fixes for:

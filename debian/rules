@@ -1,4 +1,5 @@
 #!/usr/bin/make -f
+# -*- makefile -*-
 
 # Enable all hardening options.
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
@@ -29,6 +30,24 @@ clean::
 binary-post-install/libtiff-tools::
 	$(RM) debian/libtiff-tools/usr/bin/tiffgt
 	$(RM) debian/libtiff-tools/usr/share/man/man1/tiffgt.1*
+	# removal as CVE-2015-8668 , CVE-2016-3619 , CVE-2016-3620 ,
+	# CVE-2016-3621 and CVE-2016-5319:
+	$(RM) debian/libtiff-doc/usr/share/doc/libtiff-doc/html/man/bmp2tiff.1.html
+	$(RM) debian/libtiff-tools/usr/bin/bmp2tiff
+	$(RM) debian/libtiff-tools/usr/share/man/man1/bmp2tiff.1*
+	# removal as CVE-2016-3186 and CVE-2016-5102:
+	$(RM) debian/libtiff-doc/usr/share/doc/libtiff-doc/html/man/gif2tiff.1.html
+	$(RM) debian/libtiff-tools/usr/bin/gif2tiff
+	$(RM) debian/libtiff-tools/usr/share/man/man1/gif2tiff.1*
+	# removal as CVE-2016-3631 , CVE-2016-3632 , CVE-2016-3633 ,
+	# CVE-2016-3634 and CVE-2016-8331:
+	$(RM) debian/libtiff-doc/usr/share/doc/libtiff-doc/html/man/thumbnail.1.html
+	$(RM) debian/libtiff-tools/usr/bin/thumbnail
+	$(RM) debian/libtiff-tools/usr/share/man/man1/thumbnail.1*
+	# removal as no longer supported
+	$(RM) debian/libtiff-doc/usr/share/doc/libtiff-doc/html/man/ras2tiff.1.html
+	$(RM) debian/libtiff-tools/usr/bin/ras2tiff
+	$(RM) debian/libtiff-tools/usr/share/man/man1/ras2tiff.1*
 
 # Empty dependency_libs from all .la files
 binary-post-install/libtiff5-dev::
