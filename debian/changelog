@@ -1,3 +1,29 @@
+tiff (4.0.3-12.3+deb8u3) jessie-security; urgency=high
+
+  * Backport fix for the following vulnerabilities:
+    - CVE-2014-8127 and CVE-2016-3658: out-of-bounds read in the tiffset tool,
+    - CVE-2016-9535: replace assertions by runtime checks to avoid assertions
+      in debug mode, or buffer overflows in release mode,
+    - CVE-2016-10266: divide-by-zero in TIFFReadEncodedStrip,
+    - CVE-2016-10267: divide-by-zero in OJPEGDecodeRaw,
+    - CVE-2016-10269: heap-based buffer overflow in _TIFFmemcpy,
+    - CVE-2016-10270: heap-based buffer overflow in TIFFFillStrip,
+    - CVE-2017-5225: heap buffer overflow via a crafted BitsPerSample value,
+    - CVE-2017-7592: left-shift undefined behavior issue in putagreytile,
+    - CVE-2017-7593: unitialized-memory access from tif_rawdata,
+    - CVE-2017-7594: leak in OJPEGReadHeaderInfoSecTablesAcTable,
+    - CVE-2017-7595: divide-by-zero in JPEGSetupEncode,
+    - CVE-2017-7596, CVE-2017-7597, CVE-2017-7598, CVE-2017-7599,
+      CVE-2017-7600, CVE-2017-7601 and CVE-2017-7602: multiple UBSAN crashes.
+  * Add required _TIFFcalloc@LIBTIFF_4.0 symbol to the libtiff5 package.
+
+  [ Tobias Lippert <lippertto_oss@fastmail.com> ]
+  * Fix a regression introduced by patch CVE-2014-8128-5 where enabling
+    compression of tif files results in corrupt files
+    (closes: #783555, #818360).
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Fri, 21 Apr 2017 20:22:02 +0000
+
 tiff (4.0.3-12.3+deb8u2) jessie-security; urgency=high
 
   * Backport fix for the following vulnerabilities:
