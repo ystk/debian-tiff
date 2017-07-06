@@ -191,6 +191,7 @@ libtiff.so.5 libtiff5 #MINVER#
  TIFFYCbCrtoRGB@LIBTIFF_4.0 4.0.3
  XYZtoRGB24@LIBTIFF_4.0 4.0.3
  _TIFFBuiltinCODECS@LIBTIFF_4.0 4.0.3
+ _TIFFCheckFieldIsValidForCodec@LIBTIFF_4.0 4.0.3
  _TIFFCheckMalloc@LIBTIFF_4.0 4.0.3
  _TIFFCheckRealloc@LIBTIFF_4.0 4.0.3
  _TIFFCreateAnonField@LIBTIFF_4.0 4.0.3
@@ -217,6 +218,7 @@ libtiff.so.5 libtiff5 #MINVER#
  _TIFFNoTileDecode@LIBTIFF_4.0 4.0.3
  _TIFFNoTileEncode@LIBTIFF_4.0 4.0.3
  _TIFFPrintFieldInfo@LIBTIFF_4.0 4.0.3
+ _TIFFReadEncodedStripAndAllocBuffer@LIBTIFF_4.0 4.0.3
  _TIFFRewriteField@LIBTIFF_4.0 4.0.3
  _TIFFSetDefaultCompressionState@LIBTIFF_4.0 4.0.3
  _TIFFSetupFields@LIBTIFF_4.0 4.0.3

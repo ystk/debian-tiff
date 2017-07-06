@@ -1,3 +1,22 @@
+tiff (4.0.3-12.3+deb8u4) jessie-security; urgency=high
+
+  * Backport fix for the following vulnerabilities:
+    - CVE-2017-9403: fix memory leak in non DEFER_STRILE_LOAD mode,
+    - CVE-2017-9404: memory leak vulnerability was found in the function
+      OJPEGReadHeaderInfoSecTablesQTable(),
+    - CVE-2016-10095 and CVE-2017-9147: add _TIFFCheckFieldIsValidForCodec()
+      and use it in TIFFReadDirectory() (closes: #850316, #863185),
+    - CVE-2017-9936: memory leak in error code path of JBIGDecode()
+      (closes: #866113),
+    - prevent out of memory in gtTileContig() on corrupted files,
+    - CVE-2017-10688, assertion failure in TIFFWriteDirectoryTagCheckedXXXX()
+      (closes: #866611).
+  * Add required _TIFFCheckFieldIsValidForCodec@LIBTIFF_4.0 and
+    _TIFFReadEncodedStripAndAllocBuffer@LIBTIFF_4.0 symbols to the
+    libtiff5 package.
+
+ -- Laszlo Boszormenyi (GCS) <gcs@debian.org>  Sun, 02 Jul 2017 08:35:22 +0000
+
 tiff (4.0.3-12.3+deb8u3) jessie-security; urgency=high
 
   * Backport fix for the following vulnerabilities:
