@@ -1,3 +1,24 @@
+tiff (4.0.3-12.3+deb8u5) jessie-security; urgency=high
+
+  [ Laszlo Boszormenyi (GCS) ]
+  * Fix CVE-2017-11335: heap based buffer write overflow in tiff2pdf
+    (closes: #868513).
+  * Fix CVE-2017-12944: OOM prevention in TIFFReadDirEntryArray()
+    (closes: #872607).
+  * Fix CVE-2017-13726: reachable assertion abort in TIFFWriteDirectorySec()
+    (closes: #873880).
+  * Fix CVE-2017-13727: reachable assertion abort in
+    TIFFWriteDirectoryTagSubifd() (closes: #873879).
+  * Fix CVE-2017-18013: NULL pointer dereference in TIFFPrintDirectory()
+    (closes: #885985).
+  * Fix CVE-2017-9935: heap-based buffer overflow in the t2p_write_pdf()
+    function (closes: #866109).
+      
+  [ Moritz Muehlenhoff ]
+  * CVE-2016-10371
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Fri, 26 Jan 2018 20:53:45 +0000
+
 tiff (4.0.3-12.3+deb8u4) jessie-security; urgency=high
 
   * Backport fix for the following vulnerabilities:
