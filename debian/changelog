@@ -1,3 +1,38 @@
+tiff (4.0.3-12.3+deb8u6) jessie-security; urgency=high
+
+  * Non-maintainer upload by the LTS team.
+  * Fix CVE-2017-11613: DoS vulnerability
+    A crafted input will lead to a denial of service attack. During the
+    TIFFOpen process, td_imagelength is not checked. The value of
+    td_imagelength can be directly controlled by an input file. In the
+    ChopUpSingleUncompressedStrip function, the _TIFFCheckMalloc function is
+    called based on td_imagelength. If  the value of td_imagelength is set close
+    to the amount of system memory, it will hang the system or trigger the OOM
+    killer. (Closes: #869823)
+  * Fix CVE-2018-10963: DoS vulnerability
+    The TIFFWriteDirectorySec() function in tif_dirwrite.c in LibTIFF allows
+    remote attackers to cause a denial of service (assertion failure and
+    application crash) via a crafted file, a different vulnerability than
+    CVE-2017-13726. (Closes: #898348)
+  * Fix CVE-2018-5784: DoS vulnerability
+    In LibTIFF, there is an uncontrolled resource consumption in the
+    TIFFSetDirectory function of tif_dir.c. Remote attackers could leverage
+    this vulnerability to cause a denial of service via a crafted tif file.
+    This occurs because the declared number of directory entries is not
+    validated against the actual number of directory entries. (Closes: #890441)
+  * Fix CVE-2018-7456: NULL Pointer Dereference
+    A NULL Pointer Dereference occurs in the function TIFFPrintDirectory in
+    tif_print.c in LibTIFF when using the tiffinfo tool to print crafted
+    TIFF information, a different vulnerability than CVE-2017-18013. (This
+    affects an earlier part of the TIFFPrintDirectory function that was not
+    addressed by the CVE-2017-18013 patch.) (Closes: #891288)
+  * Fix CVE-2018-8905: Heap-based buffer overflow
+    In LibTIFF, a heap-based buffer overflow occurs in the function
+    LZWDecodeCompat in tif_lzw.c via a crafted TIFF file, as demonstrated by
+    tiff2ps. (Closes: #893806)
+
+ -- Markus Koschany <apo@debian.org>  Mon, 02 Jul 2018 13:04:59 +0200
+
 tiff (4.0.3-12.3+deb8u5) jessie-security; urgency=high
 
   [ Laszlo Boszormenyi (GCS) ]
