@@ -1,3 +1,21 @@
+tiff (4.0.3-12.3+deb8u7) jessie-security; urgency=high
+
+  * Non-maintainer upload by the LTS Team. 
+  * CVE-2018-17100
+    An int32 overflow can cause a denial of service (application
+    crash) or possibly have unspecified other impact via a crafted
+    image file
+  * CVE-2018-17101
+    Out-of-bounds writes can cause a denial of service (application 
+    crash) or possibly have unspecified other impact via a crafted
+    image file
+  * CVE-2018-18557
+    Out-of-bounds write due to ignoring buffer size can cause a denial
+    of service (application crash) or possibly have unspecified other
+    impact via a crafted image file
+ 
+ -- Thorsten Alteholz <debian@alteholz.de>  Sun, 28 Oct 2018 12:03:02 +0100
+
 tiff (4.0.3-12.3+deb8u6) jessie-security; urgency=high
 
   * Non-maintainer upload by the LTS team.

@@ -1,6 +1,9 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
+# enable this to activate small testing of library
+#export DEB_MAKE_CHECK_TARGET = check
+
 # Enable all hardening options.
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 DPKG_EXPORT_BUILDFLAGS = 1
