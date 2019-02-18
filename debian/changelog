@@ -1,3 +1,18 @@
+tiff (4.0.3-12.3+deb8u8) jessie-security; urgency=high
+
+  * Non-maintainer upload by the LTS Team.
+  * Fix CVE-2018-19210: NULL pointer dereference
+    There is a NULL pointer dereference in the TIFFWriteDirectorySec function
+    in tif_dirwrite.c that will lead to a denial of service attack, as
+    demonstrated by tiffset.
+  * Fix CVE-2018-17000 CVE-2019-7663: NULL pointer dereference
+    A NULL pointer dereference in the function _TIFFmemcmp at tif_unix.c (called
+    from TIFFWriteDirectoryTagTransferfunction) allows an attacker
+    to cause a denial-of-service through a crafted tiff file. This vulnerability
+    can be triggered by the executable tiffcp.
+
+ -- Brian May <bam@debian.org>  Mon, 18 Feb 2019 17:11:10 +1100
+
 tiff (4.0.3-12.3+deb8u7) jessie-security; urgency=high
 
   * Non-maintainer upload by the LTS Team. 
