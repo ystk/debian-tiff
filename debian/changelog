@@ -1,3 +1,12 @@
+tiff (4.0.3-12.3+deb8u9) jessie-security; urgency=high
+
+  * Non-maintainer upload by the LTS Team. 
+  * CVE-2019-14973
+    Wrong handling off integer overflow checks, that are based on
+    undefined compiler behavior, might result in an application crash.
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Sun, 25 Aug 2019 11:03:02 +0200
+
 tiff (4.0.3-12.3+deb8u8) jessie-security; urgency=high
 
   * Non-maintainer upload by the LTS Team.
