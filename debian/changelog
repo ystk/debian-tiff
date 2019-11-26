@@ -1,3 +1,23 @@
+tiff (4.0.3-12.3+deb8u10) jessie-security; urgency=high
+
+  * Non-maintainer upload by the LTS Team. 
+  * CVE-2019-17546
+    The RGBA interface contains an integer overflow that might lead
+    to heap buffer overflow write.
+  * CVE-2019-6128
+    memory leak due to missing cleanup code
+  * CVE-2018-18661
+    In case of exhausted memory there is a null pointer dereference
+    in tiff2bw.
+  * CVE-2018-12900
+    Fix for heap-based buffer overflow, that could be used to crash an
+    application or even to execute arbitrary code (with the permission
+    of the user running this application).
+  * CVE-2017-17095
+    A crafted tiff file could lead to a heap buffer overflow in pal2rgb.
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Tue, 26 Nov 2019 19:03:02 +0100
+
 tiff (4.0.3-12.3+deb8u9) jessie-security; urgency=high
 
   * Non-maintainer upload by the LTS Team. 
