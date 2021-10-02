@@ -1,3 +1,13 @@
+tiff (4.0.3-12.3+deb8u12) jessie-security; urgency=high
+
+  * Non-maintainer upload by the ELTS team.
+  * Add patch so that LogLuvSetupEncode() error
+    must return 0. (Fixes: CVE-2020-19144)
+  * Add patch to fix invertImage() for bps
+    2 and 4. (Fixes: CVE-2020-19131)
+
+ -- Utkarsh Gupta <utkarsh@debian.org>  Sat, 18 Sep 2021 23:31:52 +0530
+
 tiff (4.0.3-12.3+deb8u11) jessie-security; urgency=high
 
   * Non-maintainer upload by the ELTS Team.
