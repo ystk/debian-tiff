@@ -1,3 +1,9 @@
+tiff (4.0.3-12.3+deb8u13) jessie-security; urgency=high
+
+  * Non-maintainer upload by the ELTS Team.
+
+ -- Thorsten Alteholz <debian@alteholz.de>  Mon, 13 Jul 2020 19:03:02 +0100
+
 tiff (4.0.3-12.3+deb8u12) jessie-security; urgency=high
 
   * Non-maintainer upload by the ELTS team.
