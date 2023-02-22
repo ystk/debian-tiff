@@ -23,7 +23,7 @@ Bug-Debian: http://bugs.debian.org/741451
 
 --- a/tools/tiffcp.c
 +++ b/tools/tiffcp.c
-@@ -629,6 +629,12 @@
+@@ -629,6 +629,12 @@ tiffcp(TIFF* in, TIFF* out)
  		TIFFSetField(out, TIFFTAG_PHOTOMETRIC,
  		    samplesperpixel == 1 ?
  		    PHOTOMETRIC_LOGL : PHOTOMETRIC_LOGLUV);
