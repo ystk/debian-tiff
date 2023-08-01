@@ -1,0 +1,83 @@
+From b3f6b32e1dd251c3c053137fe9555ca304eda890 Mon Sep 17 00:00:00 2001
+From: Su_Laus <sulau@freenet.de>
+Date: Tue, 14 Feb 2023 20:43:43 +0100
+Subject: tiffcrop: Do not reuse input buffer for subsequent images. Fix issue
+ 527
+
+Reuse of read_buff within loadImage() from previous image is quite unsafe, because other functions (like rotateImage() etc.) reallocate that buffer with different size without updating the local prev_readsize value.
+
+Closes #527
+---
+ tools/tiffcrop.c | 41 ++++++++++-------------------------------
+ 1 file changed, 10 insertions(+), 31 deletions(-)
+
+diff --git a/tools/tiffcrop.c b/tools/tiffcrop.c
+index f381cbc9..20e0d458 100644
+--- a/tools/tiffcrop.c
++++ b/tools/tiffcrop.c
+@@ -5915,9 +5915,7 @@ loadImage(TIFF* in, struct image_data *image, struct dump_opts *dump, unsigned c
+   uint32   tw = 0, tl = 0;       /* Tile width and length */
+   tmsize_t   tile_rowsize = 0;
+   unsigned char *read_buff = NULL;
+-  unsigned char *new_buff  = NULL;
+   int      readunit = 0;
+-  static   tmsize_t  prev_readsize = 0;
+ 
+   TIFFGetFieldDefaulted(in, TIFFTAG_BITSPERSAMPLE, &bps);
+   TIFFGetFieldDefaulted(in, TIFFTAG_SAMPLESPERPIXEL, &spp);
+@@ -6210,42 +6208,23 @@ loadImage(TIFF* in, struct image_data *image, struct dump_opts *dump, unsigned c
+     }
+  
+   read_buff = *read_ptr;
+-  if (!read_buff)
++  if (read_buff)
+   {
+-    if( buffsize > 0xFFFFFFFFU - 3 )
+-    {
+-        TIFFError("loadImage", "Unable to allocate/reallocate read buffer");
+-        return (-1);
+-    }
+-    read_buff = (unsigned char *)_TIFFmalloc(buffsize + NUM_BUFF_OVERSIZE_BYTES);
++    _TIFFfree(read_buff);
+   }
+-  else
+-    {
+-    if (prev_readsize < buffsize)
+-    {
+-      if( buffsize > 0xFFFFFFFFU - 3 )
+-      {
+-          TIFFError("loadImage", "Unable to allocate/reallocate read buffer");
+-          return (-1);
+-      }
+-      new_buff = _TIFFrealloc(read_buff, buffsize + NUM_BUFF_OVERSIZE_BYTES);
+-      if (!new_buff)
+-        {
+-	free (read_buff);
+-        read_buff = (unsigned char *)_TIFFmalloc(buffsize + NUM_BUFF_OVERSIZE_BYTES);
+-        }
+-      else
+-        read_buff = new_buff;
+-      }
+-    }
+-
++  if (buffsize > 0xFFFFFFFFU - 3)
++  {
++    TIFFError("loadImage", "Required read buffer size too large");
++    return (-1);
++  }
++  read_buff =
++    (unsigned char *)_TIFFmalloc(buffsize + NUM_BUFF_OVERSIZE_BYTES);
+   if (!read_buff)
+     {
+-    TIFFError("loadImage", "Unable to allocate/reallocate read buffer");
++    TIFFError("loadImage", "Unable to allocate read buffer");
+     return (-1);
+     }
+ 
+-  prev_readsize = buffsize;
+   *read_ptr = read_buff;
+ 
+   /* N.B. The read functions used copy separate plane data into a buffer as interleaved
+-- 
+2.30.2
+
