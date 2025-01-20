@@ -1,0 +1,110 @@
+From edf962f15613b01f2e57792012bf595265708731 Mon Sep 17 00:00:00 2001
+From: Su_Laus <sulau@freenet.de>
+Date: Fri, 3 Feb 2023 15:31:31 +0100
+Subject: tiffcrop correctly update buffersize after rotateImage() fix#520 
+ rotateImage() set up a new buffer and calculates its size individually.
+ Therefore, seg_buffs[] size needs to be updated accordingly. Before this fix,
+ the seg_buffs buffer size was calculated with a different formula than within
+ rotateImage().
+
+Closes #520.
+---
+ tools/tiffcrop.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
+
+diff --git a/tools/tiffcrop.c b/tools/tiffcrop.c
+index 343adabc..2a4168b7 100644
+--- a/tools/tiffcrop.c
++++ b/tools/tiffcrop.c
+@@ -539,7 +539,7 @@ static int rotateContigSamples24bits(uint16, uint16, uint16, uint32,
+ static int rotateContigSamples32bits(uint16, uint16, uint16, uint32, 
+                                      uint32,   uint32, uint8 *, uint8 *);
+ static int rotateImage(uint16, struct image_data *, uint32 *, uint32 *,
+- 		       unsigned char **);
++ 		       unsigned char **, size_t *);
+ static int mirrorImage(uint16, uint16, uint16, uint32, uint32,
+ 		       unsigned char *);
+ static int invertImage(uint16, uint16, uint16, uint32, uint32,
+@@ -6335,7 +6335,7 @@ static int  correct_orientation(struct image_data *image, unsigned char **work_b
+       return (-1);
+       }
+  
+-    if (rotateImage(rotation, image, &image->width, &image->length, work_buff_ptr))
++    if (rotateImage(rotation, image, &image->width, &image->length, work_buff_ptr, NULL))
+       {
+       TIFFError ("correct_orientation", "Unable to rotate image");
+       return (-1);
+@@ -7545,16 +7545,19 @@ processCropSelections(struct image_data *image, struct crop_mask *crop,
+ 
+     if (crop->crop_mode & CROP_ROTATE) /* rotate should be last as it can reallocate the buffer */
+       {
++      /* rotateImage() set up a new buffer and calculates its size
++       * individually. Therefore, seg_buffs size  needs to be updated
++       * accordingly. */
++      size_t rot_buf_size = 0;
+       if (rotateImage(crop->rotation, image, &crop->combined_width, 
+-                      &crop->combined_length, &crop_buff))
++                      &crop->combined_length, &crop_buff, &rot_buf_size))
+         {
+         TIFFError("processCropSelections", 
+                   "Failed to rotate composite regions by %d degrees", crop->rotation);
+         return (-1);
+         }
+       seg_buffs[0].buffer = crop_buff;
+-      seg_buffs[0].size = (((crop->combined_width * image->bps + 7 ) / 8)
+-                            * image->spp) * crop->combined_length; 
++      seg_buffs[0].size = rot_buf_size;
+       }
+     }
+   else  /* Separated Images */
+@@ -7651,8 +7654,9 @@ processCropSelections(struct image_data *image, struct crop_mask *crop,
+ 
+       if (crop->crop_mode & CROP_ROTATE) /* rotate should be last as it can reallocate the buffer */
+         {
++	size_t rot_buf_size = 0;
+ 	if (rotateImage(crop->rotation, image, &crop->regionlist[i].width, 
+-			&crop->regionlist[i].length, &crop_buff))
++			&crop->regionlist[i].length, &crop_buff, &rot_buf_size))
+           {
+           TIFFError("processCropSelections", 
+                     "Failed to rotate crop region by %d degrees", crop->rotation);
+@@ -7663,8 +7667,7 @@ processCropSelections(struct image_data *image, struct crop_mask *crop,
+         crop->combined_width = total_width;
+         crop->combined_length = total_length;
+         seg_buffs[i].buffer = crop_buff;
+-        seg_buffs[i].size = (((crop->regionlist[i].width * image->bps + 7 ) / 8)
+-                               * image->spp) * crop->regionlist[i].length; 
++        seg_buffs[i].size = rot_buf_size;
+         }
+       }
+     }
+@@ -7784,7 +7787,7 @@ createCroppedImage(struct image_data *image, struct crop_mask *crop,
+   if (crop->crop_mode & CROP_ROTATE) /* rotate should be last as it can reallocate the buffer */
+     {
+     if (rotateImage(crop->rotation, image, &crop->combined_width, 
+-                    &crop->combined_length, crop_buff_ptr))
++                    &crop->combined_length, crop_buff_ptr, NULL))
+       {
+       TIFFError("createCroppedImage", 
+                 "Failed to rotate image or cropped selection by %d degrees", crop->rotation);
+@@ -8446,7 +8449,7 @@ rotateContigSamples32bits(uint16 rotation, uint16 spp, uint16 bps, uint32 width,
+ /* Rotate an image by a multiple of 90 degrees clockwise */
+ static int
+ rotateImage(uint16 rotation, struct image_data *image, uint32 *img_width, 
+-            uint32 *img_length, unsigned char **ibuff_ptr)
++            uint32 *img_length, unsigned char **ibuff_ptr, size_t *rot_buf_size)
+   {
+   int      shift_width;
+   uint32   bytes_per_pixel, bytes_per_sample;
+@@ -8528,6 +8531,8 @@ rotateImage(uint16 rotation, struct image_data *image, uint32 *img_width,
+     return (-1);
+     }
+   _TIFFmemset(rbuff, '\0', buffsize + NUM_BUFF_OVERSIZE_BYTES);
++  if (rot_buf_size != NULL)
++	  *rot_buf_size = buffsize;
+ 
+   ibuff = *ibuff_ptr;
+   switch (rotation)
+-- 
+2.30.2
+

@@ -1,0 +1,62 @@
+From 38420f3052f2f72d43e4d140e4a9045e1b02d116 Mon Sep 17 00:00:00 2001
+From: Su_Laus <sulau@freenet.de>
+Date: Fri, 1 Dec 2023 20:12:25 +0100
+Subject: Check return value of _TIFFCreateAnonField().
+
+Fixes #624
+---
+ libtiff/tif_dirinfo.c |  2 +-
+ libtiff/tif_dirread.c | 15 ++++++++-------
+ 2 files changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/libtiff/tif_dirinfo.c b/libtiff/tif_dirinfo.c
+index 11ed413d..fba76319 100644
+--- a/libtiff/tif_dirinfo.c
++++ b/libtiff/tif_dirinfo.c
+@@ -617,7 +617,7 @@ _TIFFFindOrRegisterField(TIFF *tif, uint32 tag, TIFFDataType dt)
+ 	fld = TIFFFindField(tif, tag, dt);
+ 	if (fld == NULL) {
+ 		fld = _TIFFCreateAnonField(tif, tag, dt);
+-		if (!_TIFFMergeFields(tif, fld, 1))
++		if (fld == NULL || !_TIFFMergeFields(tif, fld, 1))
+ 			return NULL;
+ 	}
+ 
+diff --git a/libtiff/tif_dirread.c b/libtiff/tif_dirread.c
+index dc0831b1..b9eb1e44 100644
+--- a/libtiff/tif_dirread.c
++++ b/libtiff/tif_dirread.c
+@@ -3668,11 +3668,11 @@ TIFFReadDirectory(TIFF* tif)
+ 				    dp->tdir_tag,dp->tdir_tag);
+                                 /* the following knowingly leaks the 
+                                    anonymous field structure */
+-				if (!_TIFFMergeFields(tif,
+-					_TIFFCreateAnonField(tif,
++				const TIFFField *fld = _TIFFCreateAnonField(tif,
+ 						dp->tdir_tag,
+-						(TIFFDataType) dp->tdir_type),
+-					1)) {
++						(TIFFDataType) dp->tdir_type);
++				if (fld == NULL || !_TIFFMergeFields(tif, fld, 1))
++				{
+ 					TIFFWarningExt(tif->tif_clientdata,
+ 					    module,
+ 					    "Registering anonymous field with tag %d (0x%x) failed",
+@@ -4377,10 +4377,11 @@ TIFFReadCustomDirectory(TIFF* tif, toff_t diroff,
+ 			TIFFWarningExt(tif->tif_clientdata, module,
+ 			    "Unknown field with tag %d (0x%x) encountered",
+ 			    dp->tdir_tag, dp->tdir_tag);
+-			if (!_TIFFMergeFields(tif, _TIFFCreateAnonField(tif,
++			const TIFFField *fld = _TIFFCreateAnonField(tif,
+ 						dp->tdir_tag,
+-						(TIFFDataType) dp->tdir_type),
+-					     1)) {
++						(TIFFDataType) dp->tdir_type);
++			if (fld == NULL || !_TIFFMergeFields(tif, fld, 1))
++			{
+ 				TIFFWarningExt(tif->tif_clientdata, module,
+ 				    "Registering anonymous field with tag %d (0x%x) failed",
+ 				    dp->tdir_tag, dp->tdir_tag);
+-- 
+2.30.2
+

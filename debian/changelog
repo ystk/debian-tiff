@@ -1,3 +1,13 @@
+tiff (4.0.3-12.3+deb8u18) jessie-security; urgency=medium
+
+  * Non-maintainer upload by the ELTS Team.
+  * CVE-2024-7006: NULL pointer dereference in
+    TIFFReadDirectory/TIFFReadCustomDirectory
+  * Fixed a bug in the CVE-2023-52356 fix.
+  * Added a missing part of the CVE-2023-25433 fix.
+
+ -- Adrian Bunk <bunk@debian.org>  Mon, 20 Jan 2025 10:46:39 +0200
+
 tiff (4.0.3-12.3+deb8u17) jessie-security; urgency=medium
 
   * Non-maintainer upload by the ELTS Team.

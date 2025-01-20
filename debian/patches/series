@@ -110,12 +110,10 @@ CVE-2022-3599.patch
 CVE-2022-3970.patch
 CVE-2022-34526.patch
 CVE-2022-48281.patch
-CVE-2023-0795.patch
 CVE-2023-0800.patch
 0001-countInkNamesString-fix-UndefinedBehaviorSanitizer-a.patch
 0002-TIFFClose-avoid-NULL-pointer-dereferencing.-fix-515.patch
 0003-Consider-error-return-of-writeSelections.patch
-0004-tiffcrop-correctly-update-buffersize-after-rotateIma.patch
 0005-tiffcrop-Do-not-reuse-input-buffer-for-subsequent-im.patch
 0006-tif_luv-Check-and-correct-for-NaN-data-in-uv_encode.patch
 0007-tiffcp-fix-memory-corruption-overflow-on-hostile-ima.patch
@@ -123,3 +121,7 @@ CVE-2023-0800.patch
 
 CVE-2023-52356.patch
 CVE-2023-3576.patch
+0001-tiffcrop-correctly-update-buffersize-after-rotateIma.patch
+0004-tiffcrop-correctly-update-buffersize-after-rotateIma.patch
+CVE-2023-0795.patch
+0001-Check-return-value-of-_TIFFCreateAnonField.patch
